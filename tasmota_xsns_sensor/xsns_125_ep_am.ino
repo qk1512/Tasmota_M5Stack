@@ -9,14 +9,20 @@ struct EPAMt
     bool valid = false;
     float PM2_5;
     float PM10;
+<<<<<<< HEAD
     float PM1;
+=======
+>>>>>>> 704df27 (upload co sensor)
     char name[12] = "Air Quality";
 }EPAM;
 
 #define EPAM_ADDRESS_ID 0x24
 #define EPAM_ADDRESS_PM_2_5 0x0004
 #define EPAM_ADDRESS_PM10 0x0009
+<<<<<<< HEAD
 #define EPAM_ADDRESS_PM1 0x0000
+=======
+>>>>>>> 704df27 (upload co sensor)
 #define EPAM_FUNCTION_CODE 0x03
 #define EPAM_TIMEOUT 150
 
@@ -99,6 +105,7 @@ void EPAMReadData(void)
                 {
                     case 0:
                         EPAM.PM2_5 = ((buffer[3] << 8) | buffer[4]) / 100.0;
+<<<<<<< HEAD
                     break;
                     case 1:
                         EPAM.PM10 = ((buffer[3] << 8) | buffer[4]) / 100.0;
@@ -106,6 +113,13 @@ void EPAMReadData(void)
                     break;
                 }
                 //uint16_t pm1Raw = (buffer[7] << 8) | buffer[8];
+=======
+                        break;
+                    case 1:
+                        EPAM.PM10 = ((buffer[3] << 8) | buffer[4]) / 100.0;                    
+                        break;
+                }
+>>>>>>> 704df27 (upload co sensor)
             }
             EPAMRequestIndex = (EPAMRequestIndex + 1) % (sizeof(EPAMModbusRequests) / sizeof(EPAMModbusRequests[0]));
             RS485.requestSent[EPAM_ADDRESS_ID] = 0;
@@ -116,11 +130,17 @@ void EPAMReadData(void)
 
 const char HTTP_SNS_EPAM_PM2_5[] PROGMEM = "{s} EPAM PM2.5 {m} %.1fμg/m³";
 const char HTTP_SNS_EPAM_PM10[] PROGMEM = "{s} EPAM PM10.0 {m} %.1fμg/m³";
+<<<<<<< HEAD
 //const char HTTP_SNS_EPAM_PM1[] PROGMEM = "{s} EPAM PM1.0 {m} %.1fμg/m³";
 
 #define D_JSON_EPAM_PM2_5 "EPAM PM2.5"
 #define D_JSON_EPAM_PM10 "EPAM PM10.0"
 //#define D_JSON_EPAM_PM1 "EPAM PM1.0"
+=======
+
+#define D_JSON_EPAM_PM2_5 "EPAM PM2.5"
+#define D_JSON_EPAM_PM10 "EPAM PM10.0"
+>>>>>>> 704df27 (upload co sensor)
 
 void EPAMShow(bool json)
 {
@@ -129,7 +149,10 @@ void EPAMShow(bool json)
         ResponseAppend_P(PSTR(",\"%s\":{"), EPAM.name);
         ResponseAppend_P(PSTR("\"" D_JSON_EPAM_PM2_5 "\":%.1f,"), EPAM.PM2_5);
         ResponseAppend_P(PSTR("\"" D_JSON_EPAM_PM10 "\":%.1f"), EPAM.PM10);
+<<<<<<< HEAD
         //ResponseAppend_P(PSTR("\"" D_JSON_EPAM_PM1 "\":%.1f"), EPAM.PM1);
+=======
+>>>>>>> 704df27 (upload co sensor)
         ResponseJsonEnd();
     }
 #ifdef USE_WEBSERVER
@@ -137,7 +160,10 @@ void EPAMShow(bool json)
     {
         WSContentSend_PD(HTTP_SNS_EPAM_PM2_5, EPAM.PM2_5);
         WSContentSend_PD(HTTP_SNS_EPAM_PM10, EPAM.PM10);
+<<<<<<< HEAD
         //WSContentSend_PD(HTTP_SNS_EPAM_PM1, EPAM.PM1);
+=======
+>>>>>>> 704df27 (upload co sensor)
     }
 #endif
 }

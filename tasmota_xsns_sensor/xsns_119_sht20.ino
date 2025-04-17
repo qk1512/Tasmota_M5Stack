@@ -40,7 +40,11 @@ bool SHT20isConnected()
     if (!RS485.active)
         return false; // Return early if RS485 is not active
 
+<<<<<<< HEAD
     RS485.Rs485Modbus->Send(SHT20_ADDRESS_ID, SHT20_FUNCTION_CODE, SHT20_ADDRESS_TEMP_AND_HUM, 1);
+=======
+    RS485.Rs485Modbus->Send(SHT20_ADDRESS_ID, 0x03, SHT20_ADDRESS_TEMP_AND_HUM, 1);
+>>>>>>> 704df27 (upload co sensor)
 
     uint32_t start_time = millis(); // Store start time
     uint32_t wait_until = millis() + SHT20_TIMEOUT;
@@ -60,7 +64,12 @@ bool SHT20isConnected()
     }
     else
     {
+<<<<<<< HEAD
         if(buffer[0] == SHT20_ADDRESS_ID) return true;
+=======
+        uint16_t test = (buffer[3] << 8) | buffer[4];
+        if(test == SHT20_ADDRESS_ID) return true;
+>>>>>>> 704df27 (upload co sensor)
     }
     return false;
 }
