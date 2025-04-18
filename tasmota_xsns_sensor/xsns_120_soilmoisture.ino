@@ -83,14 +83,15 @@ bool SMisConnected()
     RS485.Rs485Modbus->Send(SM_ADDRESS_ID, SM_FUNCTION_CODE, SM_ADDRESS_CHECK , 1);
     uint32_t start_time = millis();
    
-    uint32_t wait_until = millis() + SM_TIMEOUT;
+    /* uint32_t wait_until = millis() + SM_TIMEOUT;
     while(!TimeReached(wait_until))
     {
         delay(1);
         if(RS485.Rs485Modbus -> ReceiveReady()) break;
         if(TimeReached(wait_until)) return false;
-    }
-
+    } */
+    delay(150);
+    
     uint8_t buffer[8];
     uint8_t error = RS485.Rs485Modbus -> ReceiveBuffer(buffer, 8);
     if(error)

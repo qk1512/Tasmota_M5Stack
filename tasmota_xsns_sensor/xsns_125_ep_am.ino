@@ -26,15 +26,16 @@ bool EPAMisConnected()
     RS485.Rs485Modbus -> Send(EPAM_ADDRESS_ID, EPAM_FUNCTION_CODE, EPAM_ADDRESS_CHECK, 1);
     //RS485.Rs485Modbus -> Send(EPAM_ADDRESS_ID, EPAM_FUNCTION_CODE, EPAM_ADDRESS_PM_2_5, 1);
 
-    uint32_t start_time = millis();
-    uint32_t wait_until = millis() + EPAM_TIMEOUT;
+    //uint32_t start_time = millis();
+    //uint32_t wait_until = millis() + EPAM_TIMEOUT;
 
-    while(!TimeReached(wait_until))
+    /* while(!TimeReached(wait_until))
     {
         delay(1);
         if(RS485.Rs485Modbus -> ReceiveReady()) break;
         if(TimeReached(wait_until)) return false;
-    }
+    } */
+   delay(150);
 
     uint8_t buffer[8];
     uint8_t error = RS485.Rs485Modbus -> ReceiveBuffer(buffer,8);

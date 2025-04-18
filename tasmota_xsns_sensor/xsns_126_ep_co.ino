@@ -23,16 +23,17 @@ bool EPCOisConnected()
 
     RS485.Rs485Modbus -> Send(EPCO_ADDRESS_ID, EPCO_FUNCTION_CODE, EPCO_ADDRESS_CHECK,1);
 
-    uint32_t start_time = millis();
-    uint32_t wait_until = millis() + EPCO_TIMEOUT;
+    delay(150);
+    //uint32_t start_time = millis();
+    //uint32_t wait_until = millis() + EPCO_TIMEOUT;
 
-    while(!TimeReached(wait_until))
+    /* while(!TimeReached(wait_until))
     {
         delay(1);
         if(RS485.Rs485Modbus -> ReceiveReady()) break;
     }
-
-    if(TimeReached(wait_until) && !RS485.Rs485Modbus -> ReceiveReady()) return false;
+ */
+    //if(TimeReached(wait_until) && !RS485.Rs485Modbus -> ReceiveReady()) return false;
 
     uint8_t buffer[8];
     uint8_t error = RS485.Rs485Modbus -> ReceiveBuffer(buffer, 8);

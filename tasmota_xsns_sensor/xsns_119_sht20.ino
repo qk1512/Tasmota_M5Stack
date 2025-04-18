@@ -44,14 +44,15 @@ bool SHT20isConnected()
 
     RS485.Rs485Modbus->Send(SHT20_ADDRESS_ID, 0x03, SHT20_ADDRESS_CHECK, 1);
 
-    uint32_t start_time = millis(); // Store start time
+    /* uint32_t start_time = millis(); // Store start time
     uint32_t wait_until = millis() + SHT20_TIMEOUT;
     while(!TimeReached(wait_until))
     {
         delay(1);
         if(RS485.Rs485Modbus -> ReceiveReady()) break;
         if(TimeReached(wait_until)) return false;
-    }
+    } */
+   delay(150);
 
     uint8_t buffer[8];
     uint8_t error = RS485.Rs485Modbus -> ReceiveBuffer(buffer,8);

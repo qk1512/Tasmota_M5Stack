@@ -22,7 +22,7 @@ bool EPO3isConnected()
 
     RS485.Rs485Modbus -> Send(EPO3_ADDRESS_ID, EPO3_FUNCTION_CODE, EPO3_ADDRESS_CHECK, 1);
 
-    uint32_t start_time = millis();
+    /* uint32_t start_time = millis();
     uint32_t wait_until = millis() + EPO3_TIMEOUT;
 
     while(!TimeReached(wait_until))
@@ -30,7 +30,8 @@ bool EPO3isConnected()
         delay(1);
         if(RS485.Rs485Modbus -> ReceiveReady()) break;
     }
-    if(TimeReached(wait_until) && !RS485.Rs485Modbus -> ReceiveReady()) return false;
+    if(TimeReached(wait_until) && !RS485.Rs485Modbus -> ReceiveReady()) return false; */
+    delay(150);
     
     uint8_t buffer[8];
     uint8_t error = RS485.Rs485Modbus -> ReceiveBuffer(buffer, 8);

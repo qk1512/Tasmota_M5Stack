@@ -180,8 +180,6 @@ void RaspSerial_COLLECT_DATA()
     }
     String final_payload;
     serializeJson(out_doc, final_payload);
-    //Serial.println(final_payload);
-    //AddLog(LOG_LEVEL_INFO, PSTR("[FORWARD] Sent to Rasp via Serial (3/1): %s"), final_payload.c_str());
     AddLog(LOG_LEVEL_INFO, PSTR("%s"),final_payload.c_str());
 }
 bool Xdrv78(uint32_t function)

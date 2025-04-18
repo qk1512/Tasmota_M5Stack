@@ -11,7 +11,7 @@ struct EPNO2t
     char name[4] = "NO2";
 }EPNO2;
 
-#define EPNO2_ADDRESS_ID 0x01
+#define EPNO2_ADDRESS_ID 0x23
 #define EPNO2_ADDRESS_CHECK 0x0100
 #define EPNO2_ADDRESS_NO2_CONCENTRATION 0x0006
 #define EPNO2_FUNCTION_CODE 0x03
@@ -24,15 +24,16 @@ bool EPNO2isConnected()
     RS485.Rs485Modbus->Send(EPNO2_ADDRESS_ID, EPNO2_FUNCTION_CODE, EPNO2_ADDRESS_CHECK, 1);
     // RS485.Rs485Modbus -> Send(EPNO2_ADDRESS_ID, EPNO2_FUNCTION_CODE, EPNO2_ADDRESS_NO2_CONCENTRATION, 1);
 
-        uint32_t start_time = millis();
-    uint32_t wait_until = millis() + EPNO2_TIMEOUT;
+    //uint32_t start_time = millis();
+    //uint32_t wait_until = millis() + EPNO2_TIMEOUT;
     
-    while(!TimeReached(wait_until))
+    /* while(!TimeReached(wait_until))
     {
         delay(1);
         if(RS485.Rs485Modbus -> ReceiveReady()) break;
         if(TimeReached(wait_until)) return false;
-    }
+    } */
+    delay(150);
 
     uint8_t buffer[8];
     uint8_t error = RS485.Rs485Modbus -> ReceiveBuffer(buffer, 8);
