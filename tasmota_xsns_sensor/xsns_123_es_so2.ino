@@ -12,6 +12,7 @@ struct ESSO2t
 }ESSO2;
 
 #define ESSO2_ADDRESS_ID 0x21
+#define ESSO2_ADDRESS_CHECK 0x0100
 #define ESSO2_ADDRESS_SO2_CONCENTRATION 0x0006
 #define ESSO2_FUNCTION_CODE 0x03
 #define ESSO2_TIMEOUT 150
@@ -20,7 +21,7 @@ bool ESSO2isConnected()
 {
     if(!RS485.active) return false;
 
-    RS485.Rs485Modbus -> Send(ESSO2_ADDRESS_ID, ESSO2_FUNCTION_CODE ,ESSO2_ADDRESS_SO2_CONCENTRATION,1);
+    RS485.Rs485Modbus -> Send(ESSO2_ADDRESS_ID, ESSO2_FUNCTION_CODE ,ESSO2_ADDRESS_CHECK,1);
 
     uint32_t start_time = millis();
     uint32_t wait_until = millis() + ESSO2_TIMEOUT;
@@ -42,7 +43,8 @@ bool ESSO2isConnected()
     }
     else
     {
-        if(buffer[0]  == ESSO2_ADDRESS_ID) return true;
+        uint16_t check_ESSO2 = (buffer[3] << 8) | buffer[4];
+        if(check_ESSO2  == ESSO2_ADDRESS_ID) return true;
     }
     return false;
 }
@@ -80,7 +82,7 @@ void ESSO2ReadData(void)
         else
         {
             uint16_t so2_valueRaw = (buffer[3] << 8) | buffer[4];
-            ESSO2.so2_value = so2_valueRaw;
+            ESSO2.so2_value = so2_valueRaw/100.0;
         }
         RS485.requestSent[ESSO2_ADDRESS_ID] = 0;
         RS485.lastRequestTime = 0;

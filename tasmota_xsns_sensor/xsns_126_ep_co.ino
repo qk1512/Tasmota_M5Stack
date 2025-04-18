@@ -11,7 +11,8 @@ struct EPCOt
     char name[3] = "CO";
 }EPCO;
 
-#define EPCO_ADDRESS_ID 0x01
+#define EPCO_ADDRESS_ID 0x25
+#define EPCO_ADDRESS_CHECK 0x0100
 #define EPCO_ADDRESS_CO_CONCENTRATION 0x0006
 #define EPCO_FUNCTION_CODE 0x03
 #define EPCO_TIMEOUT 150
@@ -20,7 +21,7 @@ bool EPCOisConnected()
 {
     if(!RS485.active) return false;
 
-    RS485.Rs485Modbus -> Send(EPCO_ADDRESS_ID, EPCO_FUNCTION_CODE, EPCO_ADDRESS_CO_CONCENTRATION,1);
+    RS485.Rs485Modbus -> Send(EPCO_ADDRESS_ID, EPCO_FUNCTION_CODE, EPCO_ADDRESS_CHECK,1);
 
     uint32_t start_time = millis();
     uint32_t wait_until = millis() + EPCO_TIMEOUT;
@@ -43,7 +44,8 @@ bool EPCOisConnected()
     }
     else
     {
-        if(buffer[0] == EPCO_ADDRESS_ID) return true;
+        uint16_t check_EPO3 = (buffer[3] << 8) | buffer[4];
+        if(check_EPO3 == EPCO_ADDRESS_ID) return true;
     }
     return false;
 }

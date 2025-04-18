@@ -71,6 +71,7 @@ struct SoilMoisture
 }SM_sensor;
 
 #define SM_ADDRESS_ID 0x11
+#define SM_ADDRESS_CHECK 0x0100
 #define SM_FUNCTION_CODE 0x03 
 #define SM_TIMEOUT 150
 
@@ -79,7 +80,7 @@ bool SMisConnected()
 {
     if(!RS485.active) return false;
 
-    RS485.Rs485Modbus->Send(SM_ADDRESS_ID, SM_FUNCTION_CODE, 0x0006 , 1);
+    RS485.Rs485Modbus->Send(SM_ADDRESS_ID, SM_FUNCTION_CODE, SM_ADDRESS_CHECK , 1);
     uint32_t start_time = millis();
    
     uint32_t wait_until = millis() + SM_TIMEOUT;
@@ -99,7 +100,8 @@ bool SMisConnected()
     }
     else
     {
-        if(buffer[0] == SM_ADDRESS_ID) return true;
+        uint16_t check_SM = (buffer[3] << 8) | buffer[4];
+        if(check_SM == SM_ADDRESS_ID) return true;
     }
     return false;
 }

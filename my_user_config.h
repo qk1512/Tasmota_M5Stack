@@ -152,11 +152,7 @@
 #define MQTT_CLIENT_ID         "DVES_%06X"       // [MqttClient] Also fall back topic using last 6 characters of MAC address or use "DVES_%12X" for complete MAC address
 
 // -- MQTT - Telemetry ----------------------------
-<<<<<<< HEAD
-#define TELE_PERIOD            300               // [TelePeriod] Telemetry (0 = disable, 10 - 3600 seconds)
-=======
 #define TELE_PERIOD            10               // [TelePeriod] Telemetry (0 = disable, 10 - 3600 seconds)
->>>>>>> 704df27 (upload co sensor)
 #define TELE_ON_POWER          false             // [SetOption59] send tele/STATE together with stat/RESULT (false = Disable, true = Enable)
 
 // -- MQTT - Domoticz -----------------------------
@@ -618,38 +614,25 @@
 
 // -- RS485 sensors ----------------------------
 #define USE_RS485
-//#define RS485DRIVERS_0_31     0xFFFFFFFF
-//#define RS485DRIVERS_32_63    0xFFFFFFFF
+#define RS485DRIVERS_0_31     0xFFFFFFFF
+#define RS485DRIVERS_32_63    0xFFFFFFFF
 
-#define RS485DRIVERS_0_31       0x00000000
-#define RS485DRIVERS_32_63      0x00000000
+//#define RS485DRIVERS_0_31       0x00000000
+//#define RS485DRIVERS_32_63      0x00000000
 
 #ifdef USE_RS485
   #define USE_SHT20
-<<<<<<< HEAD
-  #define USE_WDS
+  //#define USE_WDS
   #define USE_SOILMOISTURE
   #define USE_EP_NO2
   #define USE_ES_SO2
   #define USE_EP_O3
   #define USE_EPAM
-#endif // USE_RS485
-
-
-#define USE_LORA_UART
-=======
-  //#define USE_WDS
-  //#define USE_SOILMOISTURE
-  //#define USE_EP_NO2
-  //#define USE_ES_SO2
-  //#define USE_EP_O3
-  //#define USE_EPAM
   #define USE_EP_CO
 #endif // USE_RS485
 
 #define USE_RASP_UART
 //#define USE_LORA_UART
->>>>>>> 704df27 (upload co sensor)
 
 // -- I2C sensors ---------------------------------
 #define USE_I2C                                  // I2C using library wire (+10k code, 0k2 mem, 124 iram)

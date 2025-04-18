@@ -11,7 +11,8 @@ struct EPNO2t
     char name[4] = "NO2";
 }EPNO2;
 
-#define EPNO2_ADDRESS_ID 0x23
+#define EPNO2_ADDRESS_ID 0x01
+#define EPNO2_ADDRESS_CHECK 0x0100
 #define EPNO2_ADDRESS_NO2_CONCENTRATION 0x0006
 #define EPNO2_FUNCTION_CODE 0x03
 #define EPNO2_TIMEOUT 150
@@ -20,9 +21,10 @@ bool EPNO2isConnected()
 {
     if(!RS485.active) return false;
 
-    RS485.Rs485Modbus -> Send(EPNO2_ADDRESS_ID, EPNO2_FUNCTION_CODE, EPNO2_ADDRESS_NO2_CONCENTRATION, 1);
+    RS485.Rs485Modbus->Send(EPNO2_ADDRESS_ID, EPNO2_FUNCTION_CODE, EPNO2_ADDRESS_CHECK, 1);
+    // RS485.Rs485Modbus -> Send(EPNO2_ADDRESS_ID, EPNO2_FUNCTION_CODE, EPNO2_ADDRESS_NO2_CONCENTRATION, 1);
 
-    uint32_t start_time = millis() ;
+        uint32_t start_time = millis();
     uint32_t wait_until = millis() + EPNO2_TIMEOUT;
     
     while(!TimeReached(wait_until))
@@ -41,7 +43,8 @@ bool EPNO2isConnected()
     }
     else
     {
-        if(buffer[0] == EPNO2_ADDRESS_ID) return true;
+        uint16_t check_EPNO2 = (buffer[3] << 8 ) | buffer[4];
+        if(check_EPNO2 == EPNO2_ADDRESS_ID) return true;
     }
     return false;
 }
@@ -79,7 +82,7 @@ void EPNO2ReadData(void)
         else
         {
             uint16_t no2_valueRaw = (buffer[3] << 8) | buffer[4];
-            EPNO2.no2_value = no2_valueRaw;
+            EPNO2.no2_value = no2_valueRaw/100.0;
         }
         RS485.requestSent[EPNO2_ADDRESS_ID] = 0;
         RS485.lastRequestTime = 0;

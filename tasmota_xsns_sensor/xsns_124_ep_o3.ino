@@ -11,6 +11,7 @@ struct EPO3t
 }EPO3;
 
 #define EPO3_ADDRESS_ID 0x22
+#define EPO3_ADDRESS_CHECK 0x0100
 #define EPO3_ADDRESS_O3_CONCENTRATION 0x0006
 #define EPO3_FUNCTION_CODE 0x03
 #define EPO3_TIMEOUT 150
@@ -19,7 +20,7 @@ bool EPO3isConnected()
 {
     if(!RS485.active) return false;
 
-    RS485.Rs485Modbus -> Send(EPO3_ADDRESS_ID, EPO3_FUNCTION_CODE, EPO3_ADDRESS_O3_CONCENTRATION, 1);
+    RS485.Rs485Modbus -> Send(EPO3_ADDRESS_ID, EPO3_FUNCTION_CODE, EPO3_ADDRESS_CHECK, 1);
 
     uint32_t start_time = millis();
     uint32_t wait_until = millis() + EPO3_TIMEOUT;
@@ -40,7 +41,8 @@ bool EPO3isConnected()
     }
     else
     {
-        if(buffer[0] == EPO3_ADDRESS_ID) return true;
+        uint16_t check_EPO3 = (buffer[3] << 8) | buffer[4];
+        if(check_EPO3 == EPO3_ADDRESS_ID) return true;
     }
     return false;
 }
@@ -77,7 +79,7 @@ void EPO3ReadData(void)
         else
         {
             uint16_t o3_valueRaw = (buffer[3] << 8) | buffer[4];
-            EPO3.o3_value = o3_valueRaw;
+            EPO3.o3_value = o3_valueRaw/100.0;
         }
         RS485.requestSent[EPO3_ADDRESS_ID] = 0;
         RS485.lastRequestTime = 0;
