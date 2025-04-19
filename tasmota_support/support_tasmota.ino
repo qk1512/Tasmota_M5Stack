@@ -1158,7 +1158,7 @@ void PerformEverySecond(void)
       if (TasmotaGlobal.seriallog_level) {
         AddLog(LOG_LEVEL_INFO, PSTR(D_LOG_APPLICATION D_SERIAL_LOGGING_DISABLED));
       }
-      TasmotaGlobal.seriallog_level = 0;
+      //TasmotaGlobal.seriallog_level = 0;
     }
   }
 
@@ -1239,7 +1239,24 @@ void PerformEverySecond(void)
 #endif
 }
 
-/*-------------------------------------------------------------------------------------------*\
+/*----------------------------------------------------
+
+  bool serial_local;                        // Handle serial locally
+  bool fallback_topic_flag;                 // Use Topic or FallbackTopic
+  bool no_mqtt_response;                    // Respond with rule processing only
+  bool backlog_nodelay;                     // Execute all backlog commands with no delay
+  bool backlog_mutex;                       // Command backlog pending
+  bool backlog_no_mqtt_response;            // Set respond with rule processing only
+  bool stop_flash_rotate;                   // Allow flash configuration rotation
+  bool blinkstate;                          // LED state
+  bool pwm_present;                         // Any PWM channel configured with SetOption15 0
+  bool i2c_enabled[2];                      // I2C configured for all possible buses (1 or 2)
+  bool rs485_enabled;
+  bool LoraSerial_enabled;
+  #ifdef ESP32
+  bool camera_initialized;                  // For esp32-webcam, to be used in discovery
+  bool ota_factory;                         // Select safeboot binary
+#endif  // ESP32---------------------------------------*\
  * Every 0.1 second
 \*-------------------------------------------------------------------------------------------*/
 
