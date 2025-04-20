@@ -63,8 +63,8 @@ bool SHT20isConnected()
     }
     else
     {
-        uint16_t check_SHT20 = (buffer[3] << 8) | buffer[4];
-        if(check_SHT20 == SHT20_ADDRESS_ID) return true;
+        //uint16_t check_SHT20 = (buffer[3] << 8) | buffer[4];
+        if(buffer[0] == SHT20_ADDRESS_ID) return true;
     }
     return false;
 }

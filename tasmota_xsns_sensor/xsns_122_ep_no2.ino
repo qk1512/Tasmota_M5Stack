@@ -45,7 +45,7 @@ bool EPNO2isConnected()
     else
     {
         uint16_t check_EPNO2 = (buffer[3] << 8 ) | buffer[4];
-        if(check_EPNO2 == EPNO2_ADDRESS_ID) return true;
+        if (buffer[0] == EPNO2_ADDRESS_ID) return true;
     }
     return false;
 }

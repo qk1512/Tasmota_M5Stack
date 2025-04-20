@@ -319,7 +319,7 @@ bool ACMeasureReadData()
   char text_response[50];
   snprintf_P(text_response, sizeof(text_response), PSTR("Voltage : %.2f, Current: %.2f"), Unit_ACMeasure.voltage, Unit_ACMeasure.current);
 
-  AddLog(LOG_LEVEL_INFO,text_response);
+  //AddLog(LOG_LEVEL_INFO,text_response);
 
   if(isnan(Unit_ACMeasure.voltage) || isnan(Unit_ACMeasure.current)) return false;
 
@@ -327,7 +327,7 @@ bool ACMeasureReadData()
   char logVoltage[7];
   getVoltageString(logVoltage);
 
-  AddLog(LOG_LEVEL_INFO, PSTR(logVoltage));
+  //AddLog(LOG_LEVEL_INFO, PSTR(logVoltage));
 
   Unit_ACMeasure._lastRead = millis();
   return true;

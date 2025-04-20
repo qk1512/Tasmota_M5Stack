@@ -43,7 +43,7 @@ bool EPO3isConnected()
     else
     {
         uint16_t check_EPO3 = (buffer[3] << 8) | buffer[4];
-        if(check_EPO3 == EPO3_ADDRESS_ID) return true;
+        if(buffer[0] == EPO3_ADDRESS_ID) return true;
     }
     return false;
 }

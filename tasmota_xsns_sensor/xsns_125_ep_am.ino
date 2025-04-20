@@ -47,8 +47,8 @@ bool EPAMisConnected()
     }
     else
     {   
-        uint16_t check_EPAM = (buffer[3] << 8) | buffer[4];
-        if(check_EPAM == EPAM_ADDRESS_ID) return true;
+        //uint16_t check_EPAM = (buffer[3] << 8) | buffer[4];
+        if(buffer[0] == EPAM_ADDRESS_ID) return true;
     }
     return false;
 }

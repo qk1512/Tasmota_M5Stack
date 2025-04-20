@@ -1,5 +1,5 @@
 /*
-  xsns_128_dht20.ino - DHT20 temperature and humidity sensor support for Tasmota
+  xsns_128_DHT20.ino - DHT20 temperature and humidity sensor support for Tasmota
 
   Copyright (C) 2025 Quang Khanh DO
 
@@ -46,7 +46,7 @@
 #define DHT20_ADDR 0x38
 
 
-struct DHT20
+struct DHT20t
 {
   float temperature = NAN;
   float humidity = NAN;
@@ -61,41 +61,41 @@ struct DHT20
   uint32_t _lastRead = 0;
   uint8_t bits[7];
 
-} Dht20;
+} DHT20;
 
-int Dht20RequestData();
-int Dht20ReadData();
-bool Dht20Read();
-bool Dht20Convert();
+int DHT20RequestData();
+int DHT20ReadData();
+bool DHT20Read();
+bool DHT20Convert();
 
 ////////////////////////////////////////////////
 //
 //  STATUS
 //
 
-uint8_t Dht20ReadStatus()
+uint8_t DHT20ReadStatus()
 {
   Wire.requestFrom(DHT20_ADDR, (uint8_t)1);
   delay(1);
   return (uint8_t)Wire.read();
 }
 
-bool Dht20isCalibrated()
+bool DHT20isCalibrated()
 {
-  return (Dht20ReadStatus() & 0x08) == 0x08;
+  return (DHT20ReadStatus() & 0x08) == 0x08;
 }
 
-bool Dht20isMeasuring()
+bool DHT20isMeasuring()
 {
-  return (Dht20ReadStatus() & 0x80) == 0x80;
+  return (DHT20ReadStatus() & 0x80) == 0x80;
 }
 
-bool Dht20isIdle()
+bool DHT20isIdle()
 {
-  return (Dht20ReadStatus() & 0x80) == 0x00;
+  return (DHT20ReadStatus() & 0x80) == 0x00;
 }
 
-uint8_t Dht20ComputeCrc(uint8_t data[], uint8_t len)
+uint8_t DHT20ComputeCrc(uint8_t data[], uint8_t len)
 {
   // Compute CRC as per datasheet
   uint8_t crc = 0xFF;
@@ -118,16 +118,16 @@ uint8_t Dht20ComputeCrc(uint8_t data[], uint8_t len)
   return crc;
 }
 
-bool Dht20isConnected()
+bool DHT20isConnected()
 {
   Wire.beginTransmission(DHT20_ADDR);
   int rv = Wire.endTransmission();
   return rv == 0;
 }
 
-bool Dht20Begin()
+bool DHT20Begin()
 {
-  return Dht20isConnected();
+  return DHT20isConnected();
 }
 
 ///////////////////////////////////////////////////
@@ -135,24 +135,24 @@ bool Dht20Begin()
 // READ THE SENSOR
 //
 
-bool Dht20Read(void)
+bool DHT20Read(void)
 {
-  if (Dht20.valid)
+  if (DHT20.valid)
   {
-    Dht20.valid--;
+    DHT20.valid--;
   }
 
-  if (millis() - Dht20._lastRead < 1000)
+  if (millis() - DHT20._lastRead < 1000)
   {
     return false;
   }
 
-  int status = Dht20RequestData();
+  int status = DHT20RequestData();
   if (status < 0)
     return status;
   // wait for measurement ready
   uint32_t start = millis();
-  while (Dht20isMeasuring())
+  while (DHT20isMeasuring())
   {
     if (millis() - start >= 1000)
     {
@@ -161,38 +161,38 @@ bool Dht20Read(void)
     yield;
   }
   // read the measurement
-  status = Dht20ReadData();
+  status = DHT20ReadData();
   if (status < 0)
     return false;
 
-  Dht20.valid = SENSOR_MAX_MISS;
+  DHT20.valid = SENSOR_MAX_MISS;
 
   // CONVERT AND STORE
-  Dht20.status = Dht20.bits[0];
-  uint32_t raw = Dht20.bits[1];
+  DHT20.status = DHT20.bits[0];
+  uint32_t raw = DHT20.bits[1];
   raw <<= 8;
-  raw += Dht20.bits[2];
+  raw += DHT20.bits[2];
   raw <<= 4;
-  raw += (Dht20.bits[3] >> 4);
-  Dht20.humidity = raw * 9.5367431640625e-5; // ==> / 1048576.0 * 100%;
+  raw += (DHT20.bits[3] >> 4);
+  DHT20.humidity = raw * 9.5367431640625e-5; // ==> / 1048576.0 * 100%;
 
-  raw = (Dht20.bits[3] & 0x0F);
+  raw = (DHT20.bits[3] & 0x0F);
   raw <<= 8;
-  raw += Dht20.bits[4];
+  raw += DHT20.bits[4];
   raw <<= 8;
-  raw += Dht20.bits[5];
-  Dht20.temperature = raw * 1.9073486328125e-4 - 50; //  ==> / 1048576.0 * 200 - 50;
+  raw += DHT20.bits[5];
+  DHT20.temperature = raw * 1.9073486328125e-4 - 50; //  ==> / 1048576.0 * 200 - 50;
 
-  if (isnan(Dht20.temperature) || isnan(Dht20.humidity)) return false;
+  if (isnan(DHT20.temperature) || isnan(DHT20.humidity)) return false;
 
   // TEST CHECKSUM
-  uint8_t crc = Dht20ComputeCrc(Dht20.bits, 6);
-  if (crc != Dht20.bits[6]) return false;
+  uint8_t crc = DHT20ComputeCrc(DHT20.bits, 6);
+  if (crc != DHT20.bits[6]) return false;
 
   return true;
 }
 
-int Dht20RequestData()
+int DHT20RequestData()
 {
   Wire.beginTransmission(DHT20_ADDR);
   Wire.write(0xAC);
@@ -200,11 +200,11 @@ int Dht20RequestData()
   Wire.write(0x00);
   int rv = Wire.endTransmission();
 
-  Dht20._lastRequest = millis();
+  DHT20._lastRequest = millis();
   return rv;
 }
 
-int Dht20ReadData()
+int DHT20ReadData()
 {
   const uint8_t length = 7;
   int bytes = Wire.requestFrom(DHT20_ADDR, length);
@@ -217,14 +217,14 @@ int Dht20ReadData()
   bool allZero = true;
   for (int i = 0; i < bytes; i++)
   {
-    Dht20.bits[i] = Wire.read();
-    allZero = allZero && (Dht20.bits[i] == 0);
+    DHT20.bits[i] = Wire.read();
+    allZero = allZero && (DHT20.bits[i] == 0);
   }
 
   if (allZero)
     return DHT20_ERROR_BYTES_ALL_ZERO;
 
-  Dht20._lastRead = millis();
+  DHT20._lastRead = millis();
   return bytes;
 }
 
@@ -235,17 +235,17 @@ int Dht20ReadData()
 //  TEMPERATURE & HUMIDITY & OFFSET
 //
 
-void Dht20Detect(void)
+void DHT20Detect(void)
 {
   if (!I2cSetDevice(DHT20_ADDR))
     return;
 
   AddLog(LOG_LEVEL_INFO, PSTR("Checking DHT20 at 0x38"));
 
-  if (Dht20isConnected()) // Directly check if sensor responds
+  if (DHT20isConnected()) // Directly check if sensor responds
   {
-    I2cSetActiveFound(DHT20_ADDR, Dht20.name);
-    Dht20.count = 1;
+    I2cSetActiveFound(DHT20_ADDR, DHT20.name);
+    DHT20.count = 1;
     AddLog(LOG_LEVEL_INFO, PSTR("DHT20 detected!"));
   }
   else
@@ -254,21 +254,21 @@ void Dht20Detect(void)
   }
 }
 
-void Dht20Show(bool json)
+void DHT20Show(bool json)
 {
-  if (Dht20.valid)
+  if (DHT20.valid)
   {
-    TempHumDewShow(json, (0 == TasmotaGlobal.tele_period), Dht20.name, Dht20.temperature, Dht20.humidity);
+    TempHumDewShow(json, (0 == TasmotaGlobal.tele_period), DHT20.name, DHT20.temperature, DHT20.humidity);
   }
 }
 
-void Dht20EverySecond(void)
+void DHT20EverySecond(void)
 {
   if (TasmotaGlobal.uptime & 1)
   {
-    if (!Dht20Read())
+    if (!DHT20Read())
     {
-      AddLogMissed(Dht20.name, Dht20.valid);
+      AddLogMissed(DHT20.name, DHT20.valid);
     }
   }
 }
@@ -283,21 +283,21 @@ bool Xsns49(uint32_t function)
   bool result = false;
   if (FUNC_INIT == function)
   {
-    Dht20Detect();
+    DHT20Detect();
   }
-  else if (Dht20.count)
+  else if (DHT20.count)
   {
     switch (function)
     {
     case FUNC_EVERY_SECOND:
-      Dht20EverySecond();
+      DHT20EverySecond();
       break;
     case FUNC_JSON_APPEND:
-      Dht20Show(1);
+      DHT20Show(1);
       break;
 #ifdef USE_WEBSERVER
     case FUNC_WEB_SENSOR:
-      Dht20Show(0);
+      DHT20Show(0);
       break;
 #endif
     }

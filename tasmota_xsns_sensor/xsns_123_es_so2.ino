@@ -44,7 +44,7 @@ bool ESSO2isConnected()
     else
     {
         uint16_t check_ESSO2 = (buffer[3] << 8) | buffer[4];
-        if(check_ESSO2  == ESSO2_ADDRESS_ID) return true;
+        if (buffer[0] == ESSO2_ADDRESS_ID) return true;
     }
     return false;
 }
