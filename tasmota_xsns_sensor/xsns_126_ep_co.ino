@@ -7,7 +7,7 @@
 struct EPCOt
 {
     bool valid = false;
-    float co_value;
+    float co_value = 0.0;
     char name[3] = "CO";
 }EPCO;
 
@@ -21,9 +21,10 @@ bool EPCOisConnected()
 {
     if(!RS485.active) return false;
 
-    RS485.Rs485Modbus -> Send(EPCO_ADDRESS_ID, EPCO_FUNCTION_CODE, EPCO_ADDRESS_CHECK,1);
+    RS485.Rs485Modbus -> Send(EPCO_ADDRESS_ID, 0x03 , (0x01 << 8 ) | 0x00 , 0x01);
 
-    delay(150);
+    delay(200);
+    
     //uint32_t start_time = millis();
     //uint32_t wait_until = millis() + EPCO_TIMEOUT;
 
@@ -45,8 +46,9 @@ bool EPCOisConnected()
     }
     else
     {
-        //uint16_t check_EPO3 = (buffer[3] << 8) | buffer[4];
-        if(buffer[0] == EPCO_ADDRESS_ID) return true;
+        uint16_t check_EPCO = (buffer[3] << 8) | buffer[4];
+        //AddLog(LOG_LEVEL_INFO,PSTR("Address of EPCO: 0x%02x"), check_EPCO );
+        if(check_EPCO == EPCO_ADDRESS_ID) return true;
     }
     return false;
 }
@@ -62,6 +64,8 @@ void EPCOInit(void)
 void EPCOReadData(void)
 {
     if(!EPCO.valid) return;
+
+    //if(RS485.sensor_id != EPCO_ADDRESS_ID) return;
     
     if(isWaitingResponse(EPCO_ADDRESS_ID)) return;
 
@@ -85,9 +89,11 @@ void EPCOReadData(void)
         {
             uint16_t co_valueRaw = (buffer[3] << 8) | buffer[4];
             EPCO.co_value = co_valueRaw/100.0;
+            //AddLog(LOG_LEVEL_INFO, PSTR("Value of CO: %.1f"), EPCO.co_value);
         }
         RS485.requestSent[EPCO_ADDRESS_ID] = 0;
         RS485.lastRequestTime = 0;
+        advanceSensorID();
     }
 }
 
@@ -118,6 +124,7 @@ bool Xsns126(uint32_t function)
     if (FUNC_INIT == function)
     {
         EPCOInit();
+        //delay(200);
     }
     else if (EPCO.valid)
     {

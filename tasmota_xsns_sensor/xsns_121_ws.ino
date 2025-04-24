@@ -6,7 +6,7 @@
 struct WDSt
 {
     bool valid = false;
-    int wind_direction;
+    int wind_direction = 0;
     char name[15] = "WIND DIRECTION";
 }WDS;
 

@@ -7,8 +7,8 @@
 struct EPAMt
 {
     bool valid = false;
-    float PM2_5;
-    float PM10;
+    float PM2_5 = 0.0;
+    float PM10 = 0.0;
     char name[12] = "Air Quality";
 }EPAM;
 
@@ -23,7 +23,7 @@ bool EPAMisConnected()
 {
     if(!RS485.active) return false;
 
-    RS485.Rs485Modbus -> Send(EPAM_ADDRESS_ID, EPAM_FUNCTION_CODE, EPAM_ADDRESS_CHECK, 1);
+    RS485.Rs485Modbus -> Send(EPAM_ADDRESS_ID, EPAM_FUNCTION_CODE, (0x01 << 8) | 0x00, 0x01);
     //RS485.Rs485Modbus -> Send(EPAM_ADDRESS_ID, EPAM_FUNCTION_CODE, EPAM_ADDRESS_PM_2_5, 1);
 
     //uint32_t start_time = millis();
@@ -35,7 +35,7 @@ bool EPAMisConnected()
         if(RS485.Rs485Modbus -> ReceiveReady()) break;
         if(TimeReached(wait_until)) return false;
     } */
-   delay(150);
+   delay(200);
 
     uint8_t buffer[8];
     uint8_t error = RS485.Rs485Modbus -> ReceiveBuffer(buffer,8);
@@ -47,8 +47,8 @@ bool EPAMisConnected()
     }
     else
     {   
-        //uint16_t check_EPAM = (buffer[3] << 8) | buffer[4];
-        if(buffer[0] == EPAM_ADDRESS_ID) return true;
+        uint16_t check_EPAM = (buffer[3] << 8) | buffer[4];
+        if(check_EPAM == EPAM_ADDRESS_ID) return true;
     }
     return false;
 }
@@ -101,9 +101,12 @@ void EPAMReadData(void)
                 {
                     case 0:
                         EPAM.PM2_5 = ((buffer[3] << 8) | buffer[4]);
+                        //AddLog(LOG_LEVEL_INFO,PSTR("Value of PM2.5: %.1f"),EPAM.PM2_5);
                         break;
                     case 1:
-                        EPAM.PM10 = ((buffer[3] << 8) | buffer[4]);                    
+                        EPAM.PM10 = ((buffer[3] << 8) | buffer[4]);
+                        //AddLog(LOG_LEVEL_INFO,PSTR("Value of PM10.0: %.1f"), EPAM.PM10);
+                        advanceSensorID();
                         break;
                 }
             }
@@ -146,6 +149,7 @@ bool Xsns125(uint32_t function)
     if(FUNC_INIT == function)
     {
         EPAMInit();
+        //delay(200);
     }
     else if(EPAM.valid)
     {

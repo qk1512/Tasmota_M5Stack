@@ -621,9 +621,9 @@
 //#define RS485DRIVERS_32_63      0x00000000
 
 #ifdef USE_RS485
-  #define USE_SHT20
+  //#define USE_SHT20
   //#define USE_WDS
-  #define USE_SOILMOISTURE
+  //#define USE_SOILMOISTURE
   #define USE_EP_NO2
   #define USE_ES_SO2
   #define USE_EP_O3
@@ -641,7 +641,7 @@
 #define I2CDRIVERS_64_95       0xFFFFFFFF          // Enable I2CDriver64 to I2CDriver95
 
 #ifdef USE_I2C
-    #define USE_DHT20
+    //#define USE_DHT20
     //#define USE_4RELAY
     //#define USE_ACMEASURE
 //  #define USE_I2C_BUS2                           // Add experimental support for second I2C bus on ESP8266 (+0k6k code)

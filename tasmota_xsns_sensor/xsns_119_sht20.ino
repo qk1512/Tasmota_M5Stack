@@ -25,8 +25,8 @@
 struct SHT20
 {
     bool  valid = false;
-    float temperature;
-    float humidity;
+    float temperature = 0.0 ;
+    float humidity = 0.0;
     char  name[6] = "SHT20";
 }Sht20;
 
@@ -42,7 +42,7 @@ bool SHT20isConnected()
     if (!RS485.active)
         return false; // Return early if RS485 is not active
 
-    RS485.Rs485Modbus->Send(SHT20_ADDRESS_ID, 0x03, SHT20_ADDRESS_CHECK, 1);
+    RS485.Rs485Modbus->Send(SHT20_ADDRESS_ID, 0x03, SHT20_ADDRESS_CHECK , 0x01);
 
     /* uint32_t start_time = millis(); // Store start time
     uint32_t wait_until = millis() + SHT20_TIMEOUT;
@@ -52,7 +52,7 @@ bool SHT20isConnected()
         if(RS485.Rs485Modbus -> ReceiveReady()) break;
         if(TimeReached(wait_until)) return false;
     } */
-   delay(150);
+    delay(150);
 
     uint8_t buffer[8];
     uint8_t error = RS485.Rs485Modbus -> ReceiveBuffer(buffer,8);
@@ -63,8 +63,8 @@ bool SHT20isConnected()
     }
     else
     {
-        //uint16_t check_SHT20 = (buffer[3] << 8) | buffer[4];
-        if(buffer[0] == SHT20_ADDRESS_ID) return true;
+        uint16_t check_SHT20 = (buffer[3] << 8) | buffer[4];
+        if(check_SHT20 == SHT20_ADDRESS_ID) return true;
     }
     return false;
 }
