@@ -62,6 +62,10 @@ void EPO3ReadData(void)
 {
     if(!EPO3.valid) return;
 
+    //AddLog(LOG_LEVEL_INFO, PSTR("Sensor ID: 0x%02x"), RS485.sensor_id);
+
+    //if (RS485.sensor_id != EPO3_ADDRESS_ID) return;
+
     if(isWaitingResponse(EPO3_ADDRESS_ID)) return;
     if((RS485.requestSent[EPO3_ADDRESS_ID] == 0) && RS485.lastRequestTime == 0)
     {
@@ -87,7 +91,7 @@ void EPO3ReadData(void)
         }
         RS485.requestSent[EPO3_ADDRESS_ID] = 0;
         RS485.lastRequestTime = 0;
-        advanceSensorID();
+        //advanceSensorID();
     }
 }
 

@@ -65,6 +65,10 @@ void EPAMReadData(void)
 {
     if(EPAM.valid == false) return;
 
+    //AddLog(LOG_LEVEL_INFO, PSTR("Sensor ID: 0x%02x"), RS485.sensor_id);
+
+    //if (RS485.sensor_id != EPAM_ADDRESS_ID) return;
+
     if(isWaitingResponse(EPAM_ADDRESS_ID)) return;
 
     static const struct 
@@ -101,12 +105,12 @@ void EPAMReadData(void)
                 {
                     case 0:
                         EPAM.PM2_5 = ((buffer[3] << 8) | buffer[4]);
-                        //AddLog(LOG_LEVEL_INFO,PSTR("Value of PM2.5: %.1f"),EPAM.PM2_5);
+                        AddLog(LOG_LEVEL_INFO,PSTR("Value of PM2.5: %.1f"),EPAM.PM2_5);
                         break;
                     case 1:
                         EPAM.PM10 = ((buffer[3] << 8) | buffer[4]);
-                        //AddLog(LOG_LEVEL_INFO,PSTR("Value of PM10.0: %.1f"), EPAM.PM10);
-                        advanceSensorID();
+                        AddLog(LOG_LEVEL_INFO,PSTR("Value of PM10.0: %.1f"), EPAM.PM10);
+                        //advanceSensorID();
                         break;
                 }
             }

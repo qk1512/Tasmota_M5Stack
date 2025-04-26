@@ -62,6 +62,8 @@ void ESSO2ReadData(void)
 {
     if(!ESSO2.valid) return;
 
+    //if(RS485.sensor_id != ESSO2_ADDRESS_ID) return;
+
     if(isWaitingResponse(ESSO2_ADDRESS_ID)) return;
 
     if((RS485.requestSent[ESSO2_ADDRESS_ID] == 0) && RS485.lastRequestTime == 0)
@@ -88,7 +90,7 @@ void ESSO2ReadData(void)
         }
         RS485.requestSent[ESSO2_ADDRESS_ID] = 0;
         RS485.lastRequestTime = 0;
-        advanceSensorID();
+        //advanceSensorID();
     }
 }
 

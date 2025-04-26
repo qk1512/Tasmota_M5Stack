@@ -93,7 +93,7 @@ void EPCOReadData(void)
         }
         RS485.requestSent[EPCO_ADDRESS_ID] = 0;
         RS485.lastRequestTime = 0;
-        advanceSensorID();
+        //advanceSensorID();
     }
 }
 

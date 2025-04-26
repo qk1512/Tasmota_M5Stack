@@ -61,6 +61,8 @@ void EPNO2Init(void)
 void EPNO2ReadData(void)
 {
     if(!EPNO2.valid) return;
+
+    //if(RS485.sensor_id != EPNO2_ADDRESS_ID) return;
     
     if(isWaitingResponse(EPNO2_ADDRESS_ID)) return;
 
@@ -88,7 +90,7 @@ void EPNO2ReadData(void)
         }
         RS485.requestSent[EPNO2_ADDRESS_ID] = 0;
         RS485.lastRequestTime = 0;
-        advanceSensorID();
+        //advanceSensorID();
     }
 }
 
