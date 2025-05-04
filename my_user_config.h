@@ -642,8 +642,8 @@
 #define I2CDRIVERS_64_95       0xFFFFFFFF          // Enable I2CDriver64 to I2CDriver95
 
 #ifdef USE_I2C
-    #define USE_DHT20
-    #define USE_4RELAY
+    //#define USE_DHT20
+    //#define USE_4RELAY
     //#define USE_ACMEASURE
 //  #define USE_I2C_BUS2                           // Add experimental support for second I2C bus on ESP8266 (+0k6k code)
 //  #define USE_SHT                                // [I2cDriver8] Enable SHT1X sensor (+1k4 code)

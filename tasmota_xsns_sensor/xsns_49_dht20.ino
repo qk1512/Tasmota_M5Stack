@@ -23,7 +23,7 @@
   All functions of this library are used for educational purposes.
 */
 
-#ifdef USE_I2C
+#ifdef USE_I2C_1
 #ifdef USE_DHT20
 /*********************************************************************************************\
  * Sensirion I2C temperature and humidity sensors
