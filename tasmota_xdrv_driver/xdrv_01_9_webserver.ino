@@ -265,6 +265,7 @@ const char HTTP_HEAD_STYLE3[] PROGMEM =
 */
   "<h3>%s</h3>"    // Module name
   "<h2><img src='https://i.postimg.cc/3RYHZGKR/logo.png' width='200px' height='200px'></h2>";   // Device name
+  //"<h2>%s</h2>";   // Device name
 
 const char HTTP_MENU_HEAD[] PROGMEM =
   "<div style='padding:0px 5px;text-align:center;'><h3><hr/>%s<hr/></h3></div>";
@@ -433,10 +434,10 @@ const char HTTP_COUNTER[] PROGMEM =
   "<br><div id='t' style='text-align:center;'></div>";
 
 const char HTTP_END[] PROGMEM =
-  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/arendst/Tasmota' target='_blank' style='color:#aaa;'>Tasmota %s %s " D_BY " HCMUT</a></div>"
-  "</div>"
-  "</body>"
-  "</html>";
+    "<div style='text-align:right;font-size:11px;'><hr/><a href='https://github.com/arendst/Tasmota' target='_blank' style='color:#aaa;'>Tasmota %s %s " D_BY " HCMUT</a></div>"
+    "</div>"
+    "</body>"
+    "</html>";
 
 const char HTTP_DEVICE_CONTROL[] PROGMEM = "<td style='width:%d%%'><button id='o%d' onclick='la(\"&o=%d\");'>%s%s</button></td>";  // ?o is related to WebGetArg(PSTR("o"), tmp, sizeof(tmp))
 const char HTTP_DEVICE_STATE[] PROGMEM = "<td style='width:%d%%;text-align:center;font-weight:%s;font-size:%dpx'>%s</td>";

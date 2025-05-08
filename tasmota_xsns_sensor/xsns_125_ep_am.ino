@@ -6,7 +6,7 @@
 
 struct EPAMt
 {
-    bool valid = false;
+    bool valid = 0;
     float PM2_5 = 0.0;
     float PM10 = 0.0;
     char name[12] = "Air Quality";

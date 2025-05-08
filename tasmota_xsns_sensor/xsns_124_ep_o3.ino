@@ -5,7 +5,7 @@
 #define XRS485_22 22
 struct EPO3t
 {
-    bool valid = false;
+    bool valid = 1;
     float o3_value = 0.0;
     char name[3] = "O3";
 }EPO3;

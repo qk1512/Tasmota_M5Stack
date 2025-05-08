@@ -6,7 +6,7 @@
 
 struct EPCOt
 {
-    bool valid = false;
+    bool valid = 1;
     float co_value = 0.0;
     char name[3] = "CO";
 }EPCO;
@@ -118,8 +118,7 @@ void EPCOShow(bool json)
 
 bool Xsns126(uint32_t function)
 {
-    if (!Rs485Enabled(XRS485_25))
-        return false;
+    if (!Rs485Enabled(XRS485_25)) return false;
     bool result = false;
     if (FUNC_INIT == function)
     {

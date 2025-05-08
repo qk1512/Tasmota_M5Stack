@@ -56,8 +56,8 @@ struct UNIT_ACMEASURE
   uint8_t count = 0;
   //uint8_t _speed;
 
-  float voltage = NAN;
-  float current = NAN;
+  float voltage = 0;
+  float current = 0;
   //float active_power;
   //float apparent_power;
   //float power_factor;
@@ -421,9 +421,7 @@ bool Xsns118(uint32_t function)
     switch(function)
     {
       case FUNC_EVERY_SECOND:
-      ACMeasureEverySecond();
-        //ACMeasureReadData();
-        //AddLog(LOG_LEVEL_INFO, PSTR("AC MEASURE READ DATA"));
+        ACMeasureEverySecond();
         break;
       case FUNC_JSON_APPEND:
         ACMeasureShow(1);

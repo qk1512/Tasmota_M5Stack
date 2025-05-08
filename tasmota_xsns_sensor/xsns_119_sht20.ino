@@ -159,7 +159,6 @@ bool Xsns119(uint32_t function)
         case FUNC_EVERY_250_MSECOND:
         if(RS485.requestSent[0] == 1) break;
             SHT20ReadData();
-            //ModbusPoll();
             break;
         case FUNC_JSON_APPEND:
             SHT20Show(1);

@@ -6,7 +6,7 @@
 
 struct EPNO2t
 {
-    bool valid = false;
+    bool valid = 1;
     float no2_value = 0.0;
     char name[4] = "NO2";
 }EPNO2;
@@ -120,7 +120,6 @@ bool Xsns122(uint32_t function)
     if(FUNC_INIT == function)
     {
         EPNO2Init();
-        //delay(200);
     }
     else if(EPNO2.valid)
     {
